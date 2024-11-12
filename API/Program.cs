@@ -3,6 +3,7 @@ using API.Data;
 using API.Extensions;
 using API.Middleware;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,14 @@ builder.Services.AddIdentityServices(builder.Configuration);
 
 
 var app = builder.Build();
+
+// Correct the path for static file serving
+app.UseStaticFiles(new StaticFileOptions
+{
+    // Correct path to the Img directory
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Public", "Img")),
+    RequestPath = "/images"  // This makes the static files accessible at /images URL
+});
 
 // Configure the HTTP request pipeline
 app.UseMiddleware<ExceptionMiddleware>();
