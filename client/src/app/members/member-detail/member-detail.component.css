@@ -12,3 +12,8 @@
     background-color: #fff;
     border-top: none;
 }
+
+ng-gallery .gallery-thumbnail {
+    width: 80px;  
+    height: 80px;
+  }
