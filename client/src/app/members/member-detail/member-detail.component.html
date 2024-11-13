@@ -44,8 +44,9 @@
             </tab>
             <tab heading="Photos" #photoTab="tab">
                 <div *ngIf="photoTab.active">
-                  <gallery [items]="images" 
-                  class="gallery"></gallery>
+                  <gallery gallerize [items]="images" 
+                  class="gallery">
+                </gallery>
                 </div>
               </tab>
             <tab heading="Messages">

@@ -30,9 +30,8 @@ export class MemberDetailComponent implements OnInit {
     this.memberService.getMember(username).subscribe({
       next: member => {
         this.member = member;
-        member.photos?.forEach(p => {
-          const thumbUrl = p.url.replace('.jpg', '-thumb.jpg'); // Assuming you have thumbnail versions
-          this.images.push(new ImageItem({ src: p.url, thumb: thumbUrl }));
+        member.photos.map(p => { 
+          this.images.push(new ImageItem({ src: p.url, thumb: p.url}))
         });
       }
     });
