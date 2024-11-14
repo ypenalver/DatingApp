@@ -43,11 +43,14 @@
                 <p>{{member.interest}}</p>
             </tab>
             <tab heading="Photos" #photoTab="tab">
-                <div *ngIf="photoTab.active">
-                  <gallery gallerize [items]="images" 
-                  class="gallery">
-                </gallery>
-                </div>
+                @if(photoTab.active){
+                  <gallery 
+                    [items]="images" 
+                    [itemAutosize]="true"
+                    [thumbAutosize]="true"
+                    class="gallery">
+                  </gallery>
+            }
               </tab>
             <tab heading="Messages">
                 <p>Messages will go here</p>
