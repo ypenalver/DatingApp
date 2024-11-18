@@ -11,6 +11,7 @@ import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 import { LIGHTBOX_CONFIG, LightboxConfig } from 'ng-gallery/lightbox';
 import { NgxSpinner, NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './_interceptors/loading.interceptor';
+import { TimeagoClock, TimeagoModule } from 'ngx-timeago';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,6 +35,6 @@ export const appConfig: ApplicationConfig = {
         exitAnimationTime: 1000
       } as LightboxConfig
     },
-    importProvidersFrom(NgxSpinnerModule)
+    importProvidersFrom(NgxSpinnerModule, TimeagoModule.forRoot())
   ]
 };
