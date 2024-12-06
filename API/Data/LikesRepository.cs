@@ -13,16 +13,22 @@ public class LikesRepository(DataContext context, IMapper mapper) : ILikesReposi
 {
     public void AddLike(UserLike like)
     {
+         if (context.Likes == null)
+            throw new InvalidOperationException("Likes DbSet is not initialized.");
         context.Likes?.Add(like);
     }
 
     public void DeleteLike(UserLike like)
     {
+        if (context.Likes == null)
+            throw new InvalidOperationException("Likes DbSet is not initialized.");
        context.Likes?.Remove(like);
     }
 
     public async Task<IEnumerable<int>> GetCurrentUserLikeIds(int currentUserId)
     {
+         if (context.Likes == null)
+            throw new InvalidOperationException("Likes DbSet is not initialized.");
         return await context.Likes
             .Where(x => x.SourceUserId == currentUserId)
             .Select(x => x.TargetUserId)
@@ -31,12 +37,20 @@ public class LikesRepository(DataContext context, IMapper mapper) : ILikesReposi
 
     public  async Task<UserLike?> GetUserLike(int sourceUserID, int targetUserId)
     {
+         if (context.Likes == null)
+            throw new InvalidOperationException("Likes DbSet is not initialized.");
        return await context.Likes.FindAsync(sourceUserID, targetUserId);
     }
 
     public async Task<PagedList<MemberDto>> GetUserLikes(LikesParams likesParams)
     {
-        var likes = context.Likes?.AsQueryable();
+        // Ensure the Likes DbSet is initialized properly
+        if (context.Likes == null)
+        {
+         throw new InvalidOperationException("Likes DbSet is not initialized.");
+        }
+
+        var likes = context.Likes.AsQueryable();
         IQueryable<MemberDto> query;
         
     switch (likesParams.Predicate)

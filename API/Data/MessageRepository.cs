@@ -11,6 +11,8 @@ namespace API.Data;
 
 public class MessageRepository(DataContext context, IMapper mapper) : IMessageRepository
 {
+     
+    private DbSet<Message> Messages => context.Messages ?? throw new InvalidOperationException("Messages DbSet is not initialized.");
     public void AddMessage(Message message)
     {
         context.Messages?.Add(message);
@@ -24,7 +26,11 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
 
     public async Task<PagedList<MessageDto>> GetMesageForUser(MessageParams messageParams)
     {
-        var query = context.Messages    
+           if (messageParams.PageNumber <= 0 || messageParams.PageSize <= 0)
+            {
+                throw new ArgumentException("Invalid paging parameters.");
+            }
+        var query = Messages    
             .OrderByDescending(x => x.MessageSent)
             .AsQueryable();
 
@@ -42,12 +48,12 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
 
     public async Task<Message?> GetMessage(int id)
     {
-        return await context.Messages.FindAsync(id);
+        return await Messages.FindAsync(id);
     }
 
     public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipientUsername)
     {
-       var messages = await context.Messages
+       var messages = await Messages
             .Include(x => x.Sender).ThenInclude(x => x.Photos)
             .Include(x => x.Recipient).ThenInclude(x => x.Photos)
             .Where(x => 
