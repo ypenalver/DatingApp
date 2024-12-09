@@ -21,9 +21,8 @@ var app = builder.Build();
 // Correct the path for static file serving
 app.UseStaticFiles(new StaticFileOptions
 {
-    // Correct path to the Img directory
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Public", "Img")),
-    RequestPath = "/images"  // This makes the static files accessible at /images URL
+    RequestPath = "/images" 
 });
 
 // Configure the HTTP request pipeline
@@ -35,7 +34,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<PreseceHub>("hubs/presence");
+app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<MessageHub>("hubs/message");
 
 
